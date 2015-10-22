@@ -24,3 +24,6 @@ DLL Purify/
 Debug/
 Release/
 Purify/
+
+# 忽略测试文件内容
+XmppApp/XmppApp.cpp
