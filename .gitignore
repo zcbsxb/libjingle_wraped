@@ -1,0 +1,26 @@
+﻿# 忽略VS生成的临时文件
+*.suo
+*.sdf
+*.opensdf
+*.user
+
+# 忽略VC编译生成的临时文件
+*.aps
+*.ipch
+*.pch
+*.obj
+*.idb
+*.pdb
+*.res
+*.log
+*.tlog
+*.lastbuildstate
+
+# 忽略VC编译生成的临时文件夹
+ipch/
+DLL Debug/
+DLL Release/
+DLL Purify/
+Debug/
+Release/
+Purify/

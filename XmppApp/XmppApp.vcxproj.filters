@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Xmpp">
+      <UniqueIdentifier>{c1d7db3e-3cd8-426f-ab8f-7dea7d6a68ac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppConn.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppDef.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppManager.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppMessage.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppMessageInfo.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppMessageReciveTask.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppPresence.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppPresenceStatus.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+    <ClInclude Include="XmppThread.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppConn.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppManager.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppMessage.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppMessageInfo.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppMessageReciveTask.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppPresence.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppPresenceStatus.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="XmppThread.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
