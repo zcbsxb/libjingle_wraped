@@ -11,7 +11,8 @@ using namespace buzz;
 XmppConn::XmppConn(ChangeStatusCallback changeStatusCallback)
     : m_changeStatusCallback(changeStatusCallback)
     , xmppThread()
-    , pPingTask(nullptr)
+    , logInputCallback(nullptr)
+    , logOutputCallback(nullptr)
 {
     xmppThread.SignalPreConn.connect(this, &XmppConn::OnPreStart);
 
@@ -21,6 +22,12 @@ XmppConn::XmppConn(ChangeStatusCallback changeStatusCallback)
 XmppConn::~XmppConn()
 {
     xmppThread.Stop();
+}
+
+void XmppConn::SetOnLogCallback(OnLogCallcack logInput, OnLogCallcack logOuput)
+{
+    logInputCallback = logInput;
+    logOutputCallback = logOuput;
 }
 
 bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
@@ -149,21 +156,25 @@ void XmppConn::OnClosed()
 
 void XmppConn::OnLogInput(const char * pLog, int iLen)
 {
-    std::string output = "[IN ]" + std::string(pLog, iLen) + "\r\n";
-
-    ::OutputDebugString(Utf8ToWStr(output).c_str());
+    if (logInputCallback != nullptr)
+    {
+        std::string logInfo(pLog, iLen);
+        logInputCallback(Utf8ToWStr(logInfo));
+    }
 }
 
 void XmppConn::OnLogOutput(const char * pLog, int iLen)
 {
-    std::string output = "[OUT]" + std::string(pLog, iLen) + "\r\n";
-
-    ::OutputDebugString(Utf8ToWStr(output).c_str());
+    if (logOutputCallback != nullptr)
+    {
+        std::string logInfo(pLog, iLen);
+        logOutputCallback(Utf8ToWStr(logInfo));
+    }
 }
 
 void XmppConn::StartPing()
 {
-    pPingTask = new PingTask(xmppThread.client(), &xmppThread, PING_PERIOD_MILLIS, PING_TIMEROUT_MILLIS);
+    buzz::PingTask* pPingTask = new PingTask(xmppThread.client(), &xmppThread, PING_PERIOD_MILLIS, PING_TIMEROUT_MILLIS);
 
     pPingTask->SignalTimeout.connect(this, &XmppConn::OnTimeOut);
     pPingTask->Start();

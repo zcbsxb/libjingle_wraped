@@ -102,6 +102,7 @@ public:
 typedef std::function<void(const XmppStatus&, const XmppError&)> ChangeStatusCallback;
 typedef std::function<void(const IXmppPresenceStatus&)> UpdatePresenceStatusCallback;
 typedef std::function<void(const IXmppMessageInfo&)> OnMessageCallback;
+typedef std::function<void(const std::wstring&)> OnLogCallcack;
 
 /*******************************************************************
 *  ÀàÄ¿£ºIXmppManager
@@ -119,6 +120,8 @@ public:
     virtual void SetUpdatePresenceStatusCallback(UpdatePresenceStatusCallback callback) = 0;
 
     virtual void SetOnMessageCallback(OnMessageCallback callback) = 0;
+
+    virtual void SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback) = 0;
 
     virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) = 0;
 

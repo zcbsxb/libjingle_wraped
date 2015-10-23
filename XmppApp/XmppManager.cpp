@@ -33,6 +33,11 @@ void XmppManager::SetOnMessageCallback(OnMessageCallback callback)
     xmppMessage.SetOnMessageCallback(callback);
 }
 
+void XmppManager::SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback)
+{
+    xmppConn.SetOnLogCallback(logInputCallback, logOuputCallback);
+}
+
 bool XmppManager::Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
 {
     return xmppConn.Conn(userJid, userPassword, serverIp, serverPort);

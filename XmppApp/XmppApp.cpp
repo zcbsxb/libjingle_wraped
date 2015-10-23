@@ -36,6 +36,16 @@ public:
             break;
         }
     }
+
+    void OnLogInput(const std::wstring &loginfo)
+    {
+        ::OutputDebugString(loginfo.c_str());
+    }
+
+    void OnLogOutput(const std::wstring &loginfo)
+    {
+        ::OutputDebugString(loginfo.c_str());
+    }
 };
 
 std::string GetUid()
@@ -45,18 +55,14 @@ std::string GetUid()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    /*XmppConn xmppConn;
-    xmppConn.Conn("3_zhe800_waiter_05@im.zhe800.com/4ee4dff6-f678-3c4a-8029-fc769cd44b60_WindowsDesktop", "732061744", "192.168.100.222", 5222);
-
-    XmppPresence xmppPresence(&xmppConn);
-    xmppPresence.Start();*/
-
     OutputInfo outputinfo;
     XmppManager xmppManager;
 
     xmppManager.SetChangeStatusCallback(std::bind(&OutputInfo::UpdateStatus, &outputinfo, _1, _2));
     xmppManager.SetUpdatePresenceStatusCallback(std::bind(&OutputInfo::UpdatePresence, &outputinfo, _1));
     xmppManager.SetOnMessageCallback(std::bind(&OutputInfo::OnMessage, &outputinfo, _1));
+    xmppManager.SetOnLogCallback(std::bind(&OutputInfo::OnLogInput, &outputinfo, _1),
+        std::bind(&OutputInfo::OnLogOutput, &outputinfo, _1));
 
     while (true)
     {

@@ -11,6 +11,8 @@ public:
     XmppConn(ChangeStatusCallback changeStatusCallback);
     virtual ~XmppConn();
 
+    void SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback);
+
     bool Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort);
 
     void DisConn();
@@ -42,6 +44,7 @@ private:
 
     XmppThread xmppThread;
 
-    buzz::PingTask* pPingTask;
+    OnLogCallcack logInputCallback;
+    OnLogCallcack logOutputCallback;
 };
 
