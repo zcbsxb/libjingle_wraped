@@ -9,11 +9,15 @@ public:
     virtual ~XmppPresenceStatus();
 
 public:
-    virtual Status GetStatus() override;
+    virtual std::wstring GetFrom() const override;
 
-    virtual std::wstring GetStatusName() override;
+    virtual Status GetStatus() const override;
 
+    virtual std::wstring GetStatusName() const override;
+
+    void SetFrom(const std::wstring &jid);
 private:
     Status status;
+    std::wstring jid;
 };
 

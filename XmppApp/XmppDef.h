@@ -50,9 +50,11 @@ public:
     };
 
 public:
-    virtual Status GetStatus() = 0;
+    virtual std::wstring GetFrom() const = 0;
 
-    virtual std::wstring GetStatusName() = 0;
+    virtual Status GetStatus() const = 0;
+
+    virtual std::wstring GetStatusName() const = 0;
 };
 
 /*******************************************************************
@@ -103,6 +105,7 @@ typedef std::function<void(const XmppStatus&, const XmppError&)> ChangeStatusCal
 typedef std::function<void(const IXmppPresenceStatus&)> UpdatePresenceStatusCallback;
 typedef std::function<void(const IXmppMessageInfo&)> OnMessageCallback;
 typedef std::function<void(const std::wstring&)> OnLogCallcack;
+typedef std::function<void()> OnPingTimerOut;
 
 /*******************************************************************
 *  ÀàÄ¿£ºIXmppManager
@@ -122,6 +125,10 @@ public:
     virtual void SetOnMessageCallback(OnMessageCallback callback) = 0;
 
     virtual void SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback) = 0;
+
+    virtual void EnablePingServer(bool enable) = 0;
+
+    virtual void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut) = 0;
 
     virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) = 0;
 

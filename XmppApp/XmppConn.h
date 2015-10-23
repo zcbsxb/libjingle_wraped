@@ -13,6 +13,10 @@ public:
 
     void SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback);
 
+    void EnablePingServer(bool enable);
+
+    void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut);
+
     bool Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort);
 
     void DisConn();
@@ -46,5 +50,10 @@ private:
 
     OnLogCallcack logInputCallback;
     OnLogCallcack logOutputCallback;
+
+    bool enablePingTask;
+    int pingTaskPeroidMillis;
+    int pingTaskTimeroutMillis;
+    OnPingTimerOut onPingTimerOutCallback;
 };
 

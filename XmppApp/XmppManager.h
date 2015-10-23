@@ -21,6 +21,10 @@ public:
 
     virtual void SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack logOuputCallback) override;
 
+    virtual void EnablePingServer(bool enable) override;
+
+    virtual void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut) override;
+
     virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) override;
 
     virtual void Logout() override;

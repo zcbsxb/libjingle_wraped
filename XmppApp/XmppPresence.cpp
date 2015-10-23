@@ -36,6 +36,7 @@ void XmppPresence::Start()
 void XmppPresence::PresenceUpdate(const buzz::PresenceStatus& status)
 {
     XmppPresenceStatus presenceStatus(static_cast<IXmppPresenceStatus::Status>(status.show()));
+    presenceStatus.SetFrom(Utf8ToWStr(status.jid().Str()));
 
     if (updatePresenceStatusCallback != nullptr)
     {

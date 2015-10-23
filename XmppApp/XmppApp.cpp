@@ -15,13 +15,22 @@ class OutputInfo
 public:
     void UpdatePresence(const IXmppPresenceStatus& s)
     {
-        int i = 0;
-        i++;
+        std::wstring uidStr;
+        std::wstringstream os(uidStr);
+
+        uidStr.append(L"status:");
+        uidStr.append(s.GetFrom());
+        uidStr.append(L" ");
+        uidStr.append(s.GetStatusName());
+        uidStr.append(L"\r\n");
+
+        OutputDebugString(uidStr.c_str());
     }
 
     void OnMessage(const IXmppMessageInfo& messageInfo)
     {
         OutputDebugString(messageInfo.GetContent().c_str());
+        OutputDebugString(L"\r\n");
     }
 
     void UpdateStatus(const XmppStatus& status, const XmppError& error)
@@ -39,12 +48,23 @@ public:
 
     void OnLogInput(const std::wstring &loginfo)
     {
-        ::OutputDebugString(loginfo.c_str());
+        std::wstring outputInfo(loginfo);
+        outputInfo.append(L"\r\n");
+
+        ::OutputDebugString(outputInfo.c_str());
     }
 
     void OnLogOutput(const std::wstring &loginfo)
     {
-        ::OutputDebugString(loginfo.c_str());
+        std::wstring outputInfo(loginfo);
+        outputInfo.append(L"\r\n");
+
+        ::OutputDebugString(outputInfo.c_str());
+    }
+
+    void OnTimeOut()
+    {
+        ::OutputDebugString(L"timeout\r\n");
     }
 };
 
@@ -64,6 +84,9 @@ int _tmain(int argc, _TCHAR* argv[])
     xmppManager.SetOnLogCallback(std::bind(&OutputInfo::OnLogInput, &outputinfo, _1),
         std::bind(&OutputInfo::OnLogOutput, &outputinfo, _1));
 
+    xmppManager.EnablePingServer(true);
+    xmppManager.SetPingServerOption(20*1000, 15*1000, std::bind(&OutputInfo::OnTimeOut, &outputinfo));
+
     while (true)
     {
         int i;
@@ -74,8 +97,8 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         else if (i == 2)
         {
-            xmppManager.Login(L"XXXX",
-                L"XXX", L"XXXX", 5222);
+            xmppManager.Login(L"XXX",
+                L"XXX", L"XXX", 5222);
         }else if (i == 3)
         {
             xmppManager.SendStatus(IXmppPresenceStatus::SHOW_ONLINE);
@@ -97,7 +120,7 @@ int _tmain(int argc, _TCHAR* argv[])
             std::wstringstream os(uidStr);
             os << uid;
             auto msgInfo = xmppManager.BuildMessage(uidStr);
-            msgInfo->SetTo(L"XXXX");
+            msgInfo->SetTo(L"XXX");
             msgInfo->SetContent(L"²âÊÔ·¢ËÍ×Ö·û");
             xmppManager.SendMsg(msgInfo);
         }

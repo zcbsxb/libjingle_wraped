@@ -10,12 +10,22 @@ XmppPresenceStatus::~XmppPresenceStatus()
 {
 }
 
-XmppPresenceStatus::Status XmppPresenceStatus::GetStatus()
+void XmppPresenceStatus::SetFrom(const std::wstring &jid)
+{
+    this->jid = jid;
+}
+
+std::wstring XmppPresenceStatus::GetFrom() const
+{
+    return jid;
+}
+
+XmppPresenceStatus::Status XmppPresenceStatus::GetStatus() const
 {
     return status;
 }
 
-std::wstring XmppPresenceStatus::GetStatusName()
+std::wstring XmppPresenceStatus::GetStatusName() const
 {
     std::wstring name;
     switch (status)

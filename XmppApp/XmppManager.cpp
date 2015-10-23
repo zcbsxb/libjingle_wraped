@@ -38,6 +38,16 @@ void XmppManager::SetOnLogCallback(OnLogCallcack logInputCallback, OnLogCallcack
     xmppConn.SetOnLogCallback(logInputCallback, logOuputCallback);
 }
 
+void XmppManager::EnablePingServer(bool enable)
+{
+    xmppConn.EnablePingServer(enable);
+}
+
+void XmppManager::SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut)
+{
+    xmppConn.SetPingServerOption(periodMillis, timeoutMillis, timeOut);
+}
+
 bool XmppManager::Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
 {
     return xmppConn.Conn(userJid, userPassword, serverIp, serverPort);

@@ -13,6 +13,10 @@ XmppConn::XmppConn(ChangeStatusCallback changeStatusCallback)
     , xmppThread()
     , logInputCallback(nullptr)
     , logOutputCallback(nullptr)
+    , enablePingTask(false)
+    , pingTaskPeroidMillis(PING_PERIOD_MILLIS)
+    , pingTaskTimeroutMillis(PING_TIMEROUT_MILLIS)
+    , onPingTimerOutCallback(nullptr)
 {
     xmppThread.SignalPreConn.connect(this, &XmppConn::OnPreStart);
 
@@ -28,6 +32,18 @@ void XmppConn::SetOnLogCallback(OnLogCallcack logInput, OnLogCallcack logOuput)
 {
     logInputCallback = logInput;
     logOutputCallback = logOuput;
+}
+
+void XmppConn::EnablePingServer(bool enable)
+{
+    enablePingTask = enable;
+}
+
+void XmppConn::SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut)
+{
+    pingTaskPeroidMillis = periodMillis;
+    pingTaskTimeroutMillis = timeoutMillis;
+    onPingTimerOutCallback = timeOut;
 }
 
 bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
@@ -174,7 +190,12 @@ void XmppConn::OnLogOutput(const char * pLog, int iLen)
 
 void XmppConn::StartPing()
 {
-    buzz::PingTask* pPingTask = new PingTask(xmppThread.client(), &xmppThread, PING_PERIOD_MILLIS, PING_TIMEROUT_MILLIS);
+    if (!enablePingTask)
+    {
+        return;
+    }
+
+    buzz::PingTask* pPingTask = new PingTask(xmppThread.client(), &xmppThread, pingTaskPeroidMillis, pingTaskTimeroutMillis);
 
     pPingTask->SignalTimeout.connect(this, &XmppConn::OnTimeOut);
     pPingTask->Start();
@@ -182,7 +203,8 @@ void XmppConn::StartPing()
 
 void XmppConn::OnTimeOut()
 {
-    //DisConn();
-
-    ::OutputDebugStringA("OnTimerOut\r\n");
+    if (onPingTimerOutCallback != nullptr)
+    {
+        onPingTimerOutCallback();
+    }
 }
