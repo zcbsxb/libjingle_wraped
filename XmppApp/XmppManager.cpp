@@ -33,7 +33,7 @@ void XmppManager::SetOnMessageCallback(OnMessageCallback callback)
     xmppMessage.SetOnMessageCallback(callback);
 }
 
-bool XmppManager::Login(const std::string &userJid, const std::string &userPassword, const std::string &serverIp, int serverPort)
+bool XmppManager::Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
 {
     return xmppConn.Conn(userJid, userPassword, serverIp, serverPort);
 }
@@ -65,7 +65,7 @@ bool XmppManager::SendMsg(IXmppMessageInfo* messageInfo)
     return true;
 }
 
-IXmppMessageInfo* XmppManager::BuildMessage(const std::string &uid)
+IXmppMessageInfo* XmppManager::BuildMessage(const std::wstring &uid)
 {
     auto pMsgInfo = new XmppMessageInfo();
     pMsgInfo->SetUid(uid);

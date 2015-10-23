@@ -62,41 +62,41 @@ public:
 class IXmppMessageInfo
 {
 public:
-    virtual std::string GetUid() = 0;
-    virtual void SetUid(const std::string &) = 0;
+    virtual std::wstring GetUid() = 0;
+    virtual void SetUid(const std::wstring &) = 0;
 
-    virtual std::string GetType() = 0;
-    virtual void SetType(const std::string &) = 0;
+    virtual std::wstring GetType() = 0;
+    virtual void SetType(const std::wstring &) = 0;
 
     virtual bool GetIsOfflineMsg() = 0;
     virtual void SetIsOfflineMsg(bool) = 0;
 
-    virtual std::string GetFrom() = 0;
-    virtual std::string GetFromResource() = 0;
+    virtual std::wstring GetFrom() = 0;
+    virtual std::wstring GetFromResource() = 0;
 
-    virtual void SetFrom(const std::string &) = 0;
-    virtual void SetFromResource(const std::string &) = 0;
+    virtual void SetFrom(const std::wstring &) = 0;
+    virtual void SetFromResource(const std::wstring &) = 0;
 
-    virtual std::string GetTo() = 0;
-    virtual std::string GetToResource() = 0;
+    virtual std::wstring GetTo() = 0;
+    virtual std::wstring GetToResource() = 0;
 
-    virtual void SetTo(const std::string &) = 0;
-    virtual void SetToResource(const std::string &) = 0;
+    virtual void SetTo(const std::wstring &) = 0;
+    virtual void SetToResource(const std::wstring &) = 0;
 
     virtual std::wstring GetContent() const = 0;
     virtual void SetContent(const std::wstring &) = 0;
 
-    virtual std::string GetTime() = 0;
-    virtual void SetTime(const std::string &) = 0;
+    virtual std::wstring GetTime() = 0;
+    virtual void SetTime(const std::wstring &) = 0;
 
-    virtual std::string GetSubject() = 0;
-    virtual void SetSubject(const std::string &) = 0;
+    virtual std::wstring GetSubject() = 0;
+    virtual void SetSubject(const std::wstring &) = 0;
 
-    virtual std::string GetSubjectValue() = 0;
-    virtual void SetSubjectValue(const std::string &subjectValue) = 0;
+    virtual std::wstring GetSubjectValue() = 0;
+    virtual void SetSubjectValue(const std::wstring &subjectValue) = 0;
 
-    virtual std::map<std::string, std::string> GetExtention() = 0;
-    virtual void SetExtention(const std::map<std::string, std::string> &) = 0;
+    virtual std::map<std::wstring, std::wstring> GetExtention() = 0;
+    virtual void SetExtention(const std::map<std::wstring, std::wstring> &) = 0;
 };
 
 typedef std::function<void(const XmppStatus&, const XmppError&)> ChangeStatusCallback;
@@ -120,7 +120,7 @@ public:
 
     virtual void SetOnMessageCallback(OnMessageCallback callback) = 0;
 
-    virtual bool Login(const std::string &userJid, const std::string &userPassword, const std::string &serverIp, int serverPort) = 0;
+    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) = 0;
 
     virtual void Logout() = 0;
 
@@ -128,6 +128,6 @@ public:
 
     virtual bool SendMsg(IXmppMessageInfo* messageInfo) = 0;
 
-    virtual IXmppMessageInfo* BuildMessage(const std::string &uid) = 0;
+    virtual IXmppMessageInfo* BuildMessage(const std::wstring &uid) = 0;
 };
 

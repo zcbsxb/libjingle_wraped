@@ -39,18 +39,18 @@ int XmppMessageReciveTask::ProcessStart(void)
     XmppMessageInfo message;
 
     // 消息id
-    message.SetUid(stanza->Attr(buzz::QN_ID).c_str());
+    message.SetUid(Utf8ToWStr(stanza->Attr(buzz::QN_ID)));
     // 消息类型
-    message.SetType(stanza->Attr(buzz::QN_TYPE));
+    message.SetType(Utf8ToWStr(stanza->Attr(buzz::QN_TYPE)));
 
     // 获取发送人
-    std::string from(stanza->Attr(buzz::QN_FROM));
+    std::wstring from(Utf8ToWStr(stanza->Attr(buzz::QN_FROM)));
     message.SetFrom(from);
     message.SetFromResource(from);
 
     // 获取接收人
-    message.SetTo(stanza->Attr(buzz::QN_TO));
-    message.SetToResource(stanza->Attr(buzz::QN_TO));
+    message.SetTo(Utf8ToWStr(stanza->Attr(buzz::QN_TO)));
+    message.SetToResource(Utf8ToWStr(stanza->Attr(buzz::QN_TO)));
 
     // 获取消息
     message.SetContent(conv.from_bytes(body->BodyText()));
@@ -59,7 +59,7 @@ int XmppMessageReciveTask::ProcessStart(void)
     const auto delay = stanza->FirstNamed(QN_DELAY);
     if (delay != nullptr)
     {
-        message.SetTime(delay->Attr(buzz::kQnStamp));
+        message.SetTime(Utf8ToWStr(delay->Attr(buzz::kQnStamp)));
     }
 
     // 是否离线消息
@@ -69,12 +69,12 @@ int XmppMessageReciveTask::ProcessStart(void)
     const auto subject = stanza->FirstNamed(buzz::QN_SUBJECT);
     if (subject != nullptr)
     {
-        message.SetSubject(subject->BodyText());
+        message.SetSubject(Utf8ToWStr(subject->BodyText()));
 
         // 主题数据
         if (subject->HasAttr(buzz::QN_VALUE))
         {
-            message.SetSubjectValue(subject->Attr(buzz::QN_VALUE));
+            message.SetSubjectValue(Utf8ToWStr(subject->Attr(buzz::QN_VALUE)));
         }
     }
 
@@ -82,13 +82,13 @@ int XmppMessageReciveTask::ProcessStart(void)
     auto extention = stanza->FirstNamed(QN_EXTENTION);
     if (extention != nullptr)
     {
-        std::map<std::string, std::string> mapValue;
+        std::map<std::wstring, std::wstring> mapValue;
 
         auto elChild = extention->FirstElement();
         while (elChild != nullptr)
         {
             auto name = elChild->Name().LocalPart();
-            mapValue.emplace(name, elChild->BodyText().c_str());
+            mapValue.emplace(Utf8ToWStr(name), Utf8ToWStr(elChild->BodyText().c_str()));
 
             elChild = elChild->NextElement();
         }

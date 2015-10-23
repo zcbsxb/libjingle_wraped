@@ -6,8 +6,6 @@
 #include "webrtc/libjingle/xmllite/xmlelement.h"
 #include "webrtc/base/sigslot.h"
 
-#include <codecvt>
-
 class XmppConn;
 
 class XmppPresence : public sigslot::has_slots<>
@@ -29,6 +27,5 @@ private:
 private:
     XmppConn* m_pXmppConn;
     UpdatePresenceStatusCallback updatePresenceStatusCallback;
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
 };
 

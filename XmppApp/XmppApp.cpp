@@ -21,7 +21,7 @@ public:
 
     void OnMessage(const IXmppMessageInfo& messageInfo)
     {
-        OutputDebugStringW(messageInfo.GetContent().c_str());
+        OutputDebugString(messageInfo.GetContent().c_str());
     }
 
     void UpdateStatus(const XmppStatus& status, const XmppError& error)
@@ -68,7 +68,8 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         else if (i == 2)
         {
-            xmppManager.Login("XXXXX", "XXX", "XXXX", 5222);
+            xmppManager.Login(L"XXXX",
+                L"XXX", L"XXXX", 5222);
         }else if (i == 3)
         {
             xmppManager.SendStatus(IXmppPresenceStatus::SHOW_ONLINE);
@@ -86,11 +87,11 @@ int _tmain(int argc, _TCHAR* argv[])
             static int64 uid = 11112313123123;
             uid++;
 
-            std::string uidStr;
-            std::stringstream os(uidStr);
+            std::wstring uidStr;
+            std::wstringstream os(uidStr);
             os << uid;
             auto msgInfo = xmppManager.BuildMessage(uidStr);
-            msgInfo->SetTo("XXXX");
+            msgInfo->SetTo(L"XXXX");
             msgInfo->SetContent(L"²âÊÔ·¢ËÍ×Ö·û");
             xmppManager.SendMsg(msgInfo);
         }

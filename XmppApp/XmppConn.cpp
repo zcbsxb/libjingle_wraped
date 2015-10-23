@@ -23,14 +23,14 @@ XmppConn::~XmppConn()
     xmppThread.Stop();
 }
 
-bool XmppConn::Conn(const std::string &userJid, const std::string &userPassword, const std::string &serverIp, int serverPort)
+bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
 {
     // 解析域名
     addrinfo *result = nullptr;
     addrinfo hints = { 0 };
     hints.ai_family = AF_INET;
     hints.ai_flags = AI_ADDRCONFIG;
-    auto ret = ::getaddrinfo(serverIp.c_str(), nullptr, &hints, &result);
+    auto ret = ::getaddrinfo(WStrToUtf8(serverIp).c_str(), nullptr, &hints, &result);
     if (ret != 0)
     {
         return false;
@@ -59,10 +59,10 @@ bool XmppConn::Conn(const std::string &userJid, const std::string &userPassword,
 
     // 设置密码
     rtc::InsecureCryptStringImpl csi;
-    csi.password() = userPassword;
+    csi.password() = WStrToUtf8(userPassword);
 
     // 客户端设置
-    buzz::Jid jid(userJid);
+    buzz::Jid jid(WStrToUtf8(userJid));
     buzz::XmppClientSettings xcs;
     xcs.set_user(jid.node());
     xcs.set_host(jid.domain());
@@ -151,15 +151,14 @@ void XmppConn::OnLogInput(const char * pLog, int iLen)
 {
     std::string output = "[IN ]" + std::string(pLog, iLen) + "\r\n";
 
-    ::OutputDebugStringA(output.c_str());
+    ::OutputDebugString(Utf8ToWStr(output).c_str());
 }
 
 void XmppConn::OnLogOutput(const char * pLog, int iLen)
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
     std::string output = "[OUT]" + std::string(pLog, iLen) + "\r\n";
 
-    ::OutputDebugStringA(output.c_str());
+    ::OutputDebugString(Utf8ToWStr(output).c_str());
 }
 
 void XmppConn::StartPing()

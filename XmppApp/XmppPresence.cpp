@@ -57,7 +57,7 @@ bool XmppPresence::Send(const IXmppPresenceStatus::Status &s)
     status.set_camera_capability(false);
     status.set_version("1.0.0.0");
 
-    status.set_status(conv.to_bytes(presentStatus.GetStatusName()));
+    status.set_status(WStrToUtf8(presentStatus.GetStatusName()));
 
     auto pEle = TranslateStatus(status);
     m_pXmppConn->QueueStanza(pEle);

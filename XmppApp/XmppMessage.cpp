@@ -46,7 +46,7 @@ void XmppMessage::Send(IXmppMessageInfo* pMsgInfo)
     auto body = make_unique<buzz::XmlElement>(buzz::QN_BODY);
     body->SetBodyText(conv.to_bytes(pMsgInfo->GetContent()));
 
-    std::ostringstream oss;
+    std::wostringstream oss;
     oss << pMsgInfo->GetTo();
 
     auto toResource = pMsgInfo->GetToResource();
@@ -57,21 +57,21 @@ void XmppMessage::Send(IXmppMessageInfo* pMsgInfo)
     }
 
     auto stanza = new (buzz::XmlElement)(buzz::QN_MESSAGE);
-    stanza->SetAttr(buzz::QN_TO, oss.str());
+    stanza->SetAttr(buzz::QN_TO, WStrToUtf8(oss.str()));
     stanza->SetAttr(buzz::QN_TYPE, "chat");
-    stanza->SetAttr(buzz::QN_ID, pMsgInfo->GetUid());
+    stanza->SetAttr(buzz::QN_ID, WStrToUtf8(pMsgInfo->GetUid()));
     stanza->AddElement(body.release());
 
     auto subject = pMsgInfo->GetSubject();
     if (!subject.empty())
     {
         auto subjectEl = make_unique<buzz::XmlElement>(buzz::QN_SUBJECT);
-        subjectEl->SetBodyText(subject);
+        subjectEl->SetBodyText(WStrToUtf8(subject));
 
         auto subjectValue = pMsgInfo->GetSubjectValue();
         if (!subjectValue.empty())
         {
-            subjectEl->AddAttr(buzz::QN_VALUE, subjectValue);
+            subjectEl->AddAttr(buzz::QN_VALUE, WStrToUtf8(subjectValue));
         }
 
         stanza->AddElement(subjectEl.release());
@@ -85,10 +85,10 @@ void XmppMessage::Send(IXmppMessageInfo* pMsgInfo)
 
         for (auto it : extention)
         {
-            buzz::StaticQName QN_NAME = { XmppMessageReciveTask::QN_EXTENTION_SPACE.c_str(), it.first.c_str() };
+            buzz::StaticQName QN_NAME = { XmppMessageReciveTask::QN_EXTENTION_SPACE.c_str(), WStrToUtf8(it.first).c_str() };
             auto elChild = make_unique<buzz::XmlElement>(QN_NAME);
 
-            elChild->SetBodyText(it.second);
+            elChild->SetBodyText(WStrToUtf8(it.second));
 
             el->AddElement(elChild.release());
         }

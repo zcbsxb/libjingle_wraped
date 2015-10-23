@@ -11,7 +11,7 @@ public:
     XmppConn(ChangeStatusCallback changeStatusCallback);
     virtual ~XmppConn();
 
-    bool Conn(const std::string &userJid, const std::string &userPassword, const std::string &serverIp, int serverPort);
+    bool Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort);
 
     void DisConn();
 

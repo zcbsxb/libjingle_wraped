@@ -54,6 +54,9 @@
     <ClInclude Include="XmppThread.h">
       <Filter>Xmpp</Filter>
     </ClInclude>
+    <ClInclude Include="PubTools.h">
+      <Filter>Xmpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +87,9 @@
       <Filter>Xmpp</Filter>
     </ClCompile>
     <ClCompile Include="XmppThread.cpp">
+      <Filter>Xmpp</Filter>
+    </ClCompile>
+    <ClCompile Include="PubTools.cpp">
       <Filter>Xmpp</Filter>
     </ClCompile>
   </ItemGroup>

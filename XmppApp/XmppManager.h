@@ -19,7 +19,7 @@ public:
 
     virtual void SetOnMessageCallback(OnMessageCallback callback) override;
 
-    virtual bool Login(const std::string &userJid, const std::string &userPassword, const std::string &serverIp, int serverPort) override;
+    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) override;
 
     virtual void Logout() override;
 
@@ -27,7 +27,7 @@ public:
 
     virtual bool SendMsg(IXmppMessageInfo* messageInfo) override;
 
-    virtual IXmppMessageInfo* BuildMessage(const std::string &uid) override;
+    virtual IXmppMessageInfo* BuildMessage(const std::wstring &uid) override;
 private:
     void OnChangeStatus(const XmppStatus& status, const XmppError& error);
 

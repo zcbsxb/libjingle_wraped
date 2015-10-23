@@ -9,55 +9,55 @@ public:
     virtual ~XmppMessageInfo();
 
 public:
-    std::string GetUid(){ return uid; };
-    void SetUid(const std::string &uid){ this->uid = uid; };
+    std::wstring GetUid(){ return uid; };
+    void SetUid(const std::wstring &uid){ this->uid = uid; };
 
-    std::string GetType(){ return type; };
-    void SetType(const std::string &type){ this->type = type; };
+    std::wstring GetType(){ return type; };
+    void SetType(const std::wstring &type){ this->type = type; };
 
     bool GetIsOfflineMsg(){ return isOfflineMsg; };
     void SetIsOfflineMsg(bool isofflineMsg){ this->isOfflineMsg = isofflineMsg; };
 
-    std::string GetFrom(){ return from; };
-    std::string GetFromResource(){ return fromResource; };
+    std::wstring GetFrom(){ return from; };
+    std::wstring GetFromResource(){ return fromResource; };
 
-    void SetFrom(const std::string &from){ this->from = from; };
-    void SetFromResource(const std::string &fromResource){ this->fromResource = fromResource; };
+    void SetFrom(const std::wstring &from){ this->from = from; };
+    void SetFromResource(const std::wstring &fromResource){ this->fromResource = fromResource; };
 
-    std::string GetTo(){ return to; };
-    std::string GetToResource(){ return toResource; };
+    std::wstring GetTo(){ return to; };
+    std::wstring GetToResource(){ return toResource; };
 
-    void SetTo(const std::string &to){ this->to = to; };
-    void SetToResource(const std::string &toResource){ this->toResource = toResource; };
+    void SetTo(const std::wstring &to){ this->to = to; };
+    void SetToResource(const std::wstring &toResource){ this->toResource = toResource; };
 
     std::wstring GetContent() const { return content; };
     void SetContent(const std::wstring &content){ this->content = content; };
 
-    std::string GetTime(){ return time; };
-    void SetTime(const std::string &time){ this->time = time; };
+    std::wstring GetTime(){ return time; };
+    void SetTime(const std::wstring &time){ this->time = time; };
 
-    std::string GetSubject(){ return subject; };
-    void SetSubject(const std::string &subject){ this->subject = subject; };
+    std::wstring GetSubject(){ return subject; };
+    void SetSubject(const std::wstring &subject){ this->subject = subject; };
 
-    std::string GetSubjectValue(){ return subjectValue; };
-    void SetSubjectValue(const std::string &subjectValue){ this->subjectValue = subjectValue; };
+    std::wstring GetSubjectValue(){ return subjectValue; };
+    void SetSubjectValue(const std::wstring &subjectValue){ this->subjectValue = subjectValue; };
 
-    std::map<std::string, std::string> GetExtention(){ return mapExtention; };
-    void SetExtention(const std::map<std::string, std::string> &mapExtention){ this->mapExtention = mapExtention; };
+    std::map<std::wstring, std::wstring> GetExtention(){ return mapExtention; };
+    void SetExtention(const std::map<std::wstring, std::wstring> &mapExtention){ this->mapExtention = mapExtention; };
 
 public:
-    std::string uid;
-    std::string type;
+    std::wstring uid;
+    std::wstring type;
     bool isOfflineMsg;
-    std::string from;
-    std::string fromResource;
-    std::string to;
-    std::string toResource;
+    std::wstring from;
+    std::wstring fromResource;
+    std::wstring to;
+    std::wstring toResource;
     std::wstring content;
-    std::string time;
-    std::string subject;
-    std::string subjectValue;
+    std::wstring time;
+    std::wstring subject;
+    std::wstring subjectValue;
 
-    std::map<std::string, std::string> mapExtention;
+    std::map<std::wstring, std::wstring> mapExtention;
 };
 
