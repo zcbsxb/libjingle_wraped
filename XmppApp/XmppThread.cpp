@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "XmppThread.h"
+#include "PubTools.h"
 
 #include "webrtc/libjingle/xmpp/xmppauth.h"
 #include "webrtc/libjingle/xmpp/xmppclientsettings.h"
@@ -9,13 +10,18 @@ namespace
     const uint32 MSG_LOGIN = 1;
     const uint32 MSG_DISCONNECT = 2;
     const uint32 MSG_SENDSTANZA = 3;
+    const uint32 MSG_LOGINTIMEOUT = 4;
 
     struct LoginData : public rtc::MessageData 
     {
-        LoginData(const buzz::XmppClientSettings& s) : xcs(s) {};
+        LoginData(const buzz::XmppClientSettings& s, int time) : xcs(s), timeoutTimeSecond(time)
+        {
+        };
+
         virtual ~LoginData() {};
 
         buzz::XmppClientSettings xcs;
+        int timeoutTimeSecond;
     };
 
     struct StanzaData : public rtc::MessageData
@@ -31,10 +37,21 @@ namespace
 
         buzz::XmlElement* pEle;
     };
+
+    struct LoginTimeOutData : public rtc::MessageData
+    {
+        LoginTimeOutData(std::wstring id) : connId(id)
+        {
+
+        };
+
+        std::wstring connId;
+    };
 }
 
 XmppThread::XmppThread()
     : pump_(nullptr)
+    , connId()
 {
 }
 
@@ -45,9 +62,9 @@ XmppThread::~XmppThread()
     OnMessageDisconnect(nullptr);
 }
 
-void XmppThread::Conn(const buzz::XmppClientSettings& xcs) 
+void XmppThread::Conn(const buzz::XmppClientSettings& xcs, int timerOutSeconds)
 {
-    Post(this, MSG_LOGIN, new LoginData(xcs));
+    Post(this, MSG_LOGIN, new LoginData(xcs, timerOutSeconds));
 }
 
 void XmppThread::DisConn()
@@ -79,7 +96,21 @@ void XmppThread::ProcessMessages(int cms)
 
 void XmppThread::OnStateChange(buzz::XmppEngine::State state)
 {
+    switch (state)
+    {
+    case buzz::XmppEngine::STATE_OPEN:
+    {
+        connId.clear();
 
+        break;
+    }
+    case buzz::XmppEngine::STATE_CLOSED:
+    {
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void XmppThread::OnMessage(rtc::Message* pmsg) 
@@ -96,6 +127,10 @@ void XmppThread::OnMessage(rtc::Message* pmsg)
     else if (pmsg->message_id == MSG_SENDSTANZA)
     {
         OnMessageStanza(pmsg);
+    }
+    else if (pmsg->message_id == MSG_LOGINTIMEOUT)
+    {
+        OnMessageLoginTimeOut(pmsg);
     }
     else 
     {
@@ -119,6 +154,11 @@ void XmppThread::OnMessageLogin(rtc::Message* pmsg)
     auto xmppSocket = new buzz::XmppSocket(buzz::TLS_DISABLED);
 
     pump_->DoLogin(data->xcs, xmppSocket, new XmppAuth());
+
+    // 连接超时处理
+    connId = PubTools::GenerateUUID();
+
+    PostDelayed(data->timeoutTimeSecond * 1000, this, MSG_LOGINTIMEOUT, new LoginTimeOutData(connId));
 
     delete data;
 }
@@ -144,4 +184,18 @@ void XmppThread::OnMessageStanza(rtc::Message* pmsg)
 
         delete pData;
     }
+}
+
+void XmppThread::OnMessageLoginTimeOut(rtc::Message* pmsg)
+{
+    LoginTimeOutData* data = reinterpret_cast<LoginTimeOutData*>(pmsg->pdata);
+    if (connId != data->connId)
+    {
+        return;
+    }
+
+    OnMessageDisconnect(nullptr);
+
+    // 通知登陆超时
+    SignalConnTimeOut();
 }

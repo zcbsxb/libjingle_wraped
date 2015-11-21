@@ -19,6 +19,7 @@ XmppConn::XmppConn(ChangeStatusCallback changeStatusCallback)
     , onPingTimerOutCallback(nullptr)
 {
     xmppThread.SignalPreConn.connect(this, &XmppConn::OnPreStart);
+    xmppThread.SignalConnTimeOut.connect(this, &XmppConn::OnConnTimeOut);
 
     xmppThread.Start();
 }
@@ -46,7 +47,7 @@ void XmppConn::SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTi
     onPingTimerOutCallback = timeOut;
 }
 
-bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
+bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort, int timerOutSeconds)
 {
     // ½âÎöÓòÃû
     addrinfo *result = nullptr;
@@ -94,7 +95,7 @@ bool XmppConn::Conn(const std::wstring &userJid, const std::wstring &userPasswor
     xcs.set_use_tls(buzz::TlsOptions::TLS_DISABLED);
     xcs.set_server(server);
 
-    xmppThread.Conn(xcs);
+    xmppThread.Conn(xcs, timerOutSeconds);
 
     return true;
 }
@@ -120,6 +121,11 @@ void XmppConn::OnPreStart()
     client->SignalStateChange.connect(this, &XmppConn::OnStateChange);
     client->SignalLogInput.connect(this, &XmppConn::OnLogInput);
     client->SignalLogOutput.connect(this, &XmppConn::OnLogOutput);
+}
+
+void XmppConn::OnConnTimeOut()
+{
+    m_changeStatusCallback(STATE_CONNTIMEOUT, ERROR_NONE);
 }
 
 void XmppConn::OnStateChange(buzz::XmppEngine::State state)

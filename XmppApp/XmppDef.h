@@ -11,6 +11,7 @@ enum XmppStatus
 {
     STATE_OPEN,
     STATE_CLOSE,
+    STATE_CONNTIMEOUT,
 };
 
 enum XmppError
@@ -130,7 +131,7 @@ public:
 
     virtual void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut) = 0;
 
-    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) = 0;
+    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort, int timerOutSeconds) = 0;
 
     virtual void Logout() = 0;
 

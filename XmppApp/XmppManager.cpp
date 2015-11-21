@@ -48,9 +48,9 @@ void XmppManager::SetPingServerOption(int periodMillis, int timeoutMillis, OnPin
     xmppConn.SetPingServerOption(periodMillis, timeoutMillis, timeOut);
 }
 
-bool XmppManager::Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort)
+bool XmppManager::Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort, int timerOutSeconds)
 {
-    return xmppConn.Conn(userJid, userPassword, serverIp, serverPort);
+    return xmppConn.Conn(userJid, userPassword, serverIp, serverPort, timerOutSeconds);
 }
 
 void XmppManager::Logout()

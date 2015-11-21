@@ -38,17 +38,23 @@ public:
         switch (status)
         {
         case XmppStatus::STATE_OPEN:
+            // 登陆成功
             ::OutputDebugStringA("open\r\n");
             break;
         case XmppStatus::STATE_CLOSE:
+            // 作为日志输出查看
             ::OutputDebugStringA("closed\r\n");
+            break;
+        case XmppStatus::STATE_CONNTIMEOUT:
+            // 登陆失败
+            ::OutputDebugStringA("STATE_CONNTIMEOUT\r\n");
             break;
         }
     }
 
     void OnLogInput(const std::wstring &loginfo)
     {
-        std::wstring outputInfo(loginfo);
+        std::wstring outputInfo(L"[IN ]" + loginfo);
         outputInfo.append(L"\r\n");
 
         ::OutputDebugString(outputInfo.c_str());
@@ -56,7 +62,7 @@ public:
 
     void OnLogOutput(const std::wstring &loginfo)
     {
-        std::wstring outputInfo(loginfo);
+        std::wstring outputInfo(L"[OUT]" + loginfo);
         outputInfo.append(L"\r\n");
 
         ::OutputDebugString(outputInfo.c_str());
@@ -64,6 +70,7 @@ public:
 
     void OnTimeOut()
     {
+        // 登陆成功后检测
         ::OutputDebugString(L"timeout\r\n");
     }
 };
@@ -97,8 +104,11 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         else if (i == 2)
         {
-            xmppManager.Login(L"XXX",
-                L"XXX", L"XXX", 5222);
+            if (!xmppManager.Login(L"XXXX",
+                L"XXXX", L"XXXX", 5222, 20))
+            {
+                ::OutputDebugString(L"login error\r\n");
+            }
         }else if (i == 3)
         {
             xmppManager.SendStatus(IXmppPresenceStatus::SHOW_ONLINE);
@@ -109,7 +119,7 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         else if (i == 5)
         {
-            xmppManager.SendStatus(IXmppPresenceStatus::SHOW_AWAY);
+            xmppManager.SendStatus(IXmppPresenceStatus::SHOW_OFFLINE);
         }
         else if (i == 6)
         {
@@ -120,7 +130,7 @@ int _tmain(int argc, _TCHAR* argv[])
             std::wstringstream os(uidStr);
             os << uid;
             auto msgInfo = xmppManager.BuildMessage(uidStr);
-            msgInfo->SetTo(L"XXX");
+            msgInfo->SetTo(L"XXXX");
             msgInfo->SetContent(L"测试发送字符");
             xmppManager.SendMsg(msgInfo);
         }

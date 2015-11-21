@@ -17,7 +17,7 @@ public:
 
     void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut);
 
-    bool Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort);
+    bool Conn(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort, int timerOutSeconds);
 
     void DisConn();
 
@@ -26,6 +26,8 @@ public:
     void QueueStanza(buzz::XmlElement* pEle);
 private:
     void OnPreStart();
+
+    void OnConnTimeOut();
 
     void OnStateChange(buzz::XmppEngine::State state);
 

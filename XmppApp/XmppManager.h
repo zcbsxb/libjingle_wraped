@@ -25,7 +25,7 @@ public:
 
     virtual void SetPingServerOption(int periodMillis, int timeoutMillis, OnPingTimerOut timeOut) override;
 
-    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort) override;
+    virtual bool Login(const std::wstring &userJid, const std::wstring &userPassword, const std::wstring &serverIp, int serverPort, int timerOutSeconds) override;
 
     virtual void Logout() override;
 
